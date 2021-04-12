@@ -1,11 +1,14 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 
 import "./Button.scss";
 
 class Button extends Component {
   static defaultProps = {};
 
-  static propTypes = {};
+  static propTypes = {
+    onClick: PropTypes.func.isRequired,
+  };
 
   render() {
     return (

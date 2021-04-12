@@ -1,22 +1,40 @@
 import "./Modal.scss";
 import React, { Component } from "react";
-//import PropTypes from "prop-types";
+import PropTypes from "prop-types";
 
 export default class Modal extends Component {
-  componentDidMount() {}
+  static propTypes = {
+    onClose: PropTypes.func.isRequired,
+    modalURL: PropTypes.string.isRequired,
+  };
 
-  componentWillUnmount() {}
+  componentDidMount() {
+    window.addEventListener("keydown", this.handleKeyDown);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener("keydown", this.handleKeyDown);
+  }
+
+  handleKeyDown = (e) => {
+    if (e.code === "Escape") {
+      this.props.onClose();
+    }
+  };
+
+  handleOverlayClick = (e) => {
+    if (e.currentTarget === e.target) {
+      this.props.onClose();
+    }
+  };
+
   render() {
     return (
-      <div className="Overlay">
+      <div className="Overlay" onClick={this.handleOverlayClick}>
         <div className="Modal">
-          <img src="" alt="" />
+          <img src={this.props.modalURL} alt={this.props.modalURL} />
         </div>
       </div>
     );
   }
 }
-
-//Modal.propTypes = {};
-
-//export default Modal;

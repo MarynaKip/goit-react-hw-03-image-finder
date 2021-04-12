@@ -1,22 +1,18 @@
-//import PropTypes from "prop-types";
-import ImageGalleryItem from "../ImageGalleryItem";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+
 import "./ImageGallery.scss";
 
 // import styled from "styled-components";
 
-const ImageGallery = ({ images, onOpenModal }) => (
-  <ul className="ImageGallery">
-    {images.map((image) => (
-      <li key={image.id}>
-        <ImageGalleryItem
-          imageURL={image.webformatURL}
-          onOpenModal={onOpenModal}
-        />
-      </li>
-    ))}
-  </ul>
-);
+class ImageGallery extends Component {
+  render() {
+    return <ul className="ImageGallery">{this.props.children}</ul>;
+  }
+}
 
-//ImageGallery.propTypes = {};
+ImageGallery.propTypes = {
+  children: PropTypes.node,
+};
 
 export default ImageGallery;

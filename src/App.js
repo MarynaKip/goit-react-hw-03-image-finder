@@ -3,6 +3,7 @@ import imagesApi from "./services/images-api";
 import "./App.css";
 import Searchbar from "./components/Searchbar";
 import ImageGallery from "./components/ImageGallery";
+import ImageGalleryItem from "./components/ImageGalleryItem";
 import Loader from "./components/Loader";
 import Button from "./components/Button";
 import Modal from "./components/Modal";
@@ -57,14 +58,33 @@ class App extends Component {
     this.setState(({ showModal }) => ({ showModal: !showModal }));
   };
 
+  onOpenModal = (largeURL) => {
+    this.setState({ modalImage: largeURL });
+    this.toggleModal();
+  };
+
   render() {
-    const { images, isLoading, error, showModal } = this.state;
+    const { images, isLoading, error, showModal, modalImage } = this.state;
     return (
       <div className="App">
-        {showModal && <Modal />}
+        {showModal && (
+          <Modal modalURL={modalImage} onClose={this.toggleModal} />
+        )}
         {error && <p>Oops!</p>}
         <Searchbar onSubmit={this.onChangeQuery} />
-        <ImageGallery images={images} onOpenModal={this.toggleModal} />
+        {/* <ImageGallery id={id}
+          images={images}
+          onOpenModal={this.toggleModal} /> */}
+        <ImageGallery>
+          {images.map((image) => (
+            <ImageGalleryItem
+              id={image.id}
+              imageURL={image.webformatURL}
+              modalURL={image.largeImageURL}
+              onClick={this.onOpenModal}
+            />
+          ))}
+        </ImageGallery>
         {isLoading && <Loader />}
         {images.length > 0 && <Button onClick={this.fetchImages} />}
       </div>

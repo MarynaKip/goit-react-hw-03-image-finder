@@ -1,17 +1,26 @@
+import React, { Component } from "react";
 import "./ImageGalleryItem.scss";
-//import PropTypes from "prop-types";
+import PropTypes from "prop-types";
 
-const ImageGalleryItem = ({ imageURL, onOpenModal }) => (
-  <li className="ImageGalleryItem">
-    <img
-      src={imageURL}
-      alt=""
-      className="ImageGalleryItem-image"
-      onClick={onOpenModal}
-    />
-  </li>
-);
+class ImageGalleryItem extends Component {
+  render() {
+    return (
+      <li className="ImageGalleryItem" key={this.props.id} id={this.props.id}>
+        <img
+          src={this.props.imageURL}
+          alt={this.props.imageURL}
+          className="ImageGalleryItem-image"
+          onClick={() => this.props.onClick(this.props.modalURL)}
+        />
+      </li>
+    );
+  }
+}
 
-//ImageGalleryItem.propTypes = {};
+ImageGalleryItem.propTypes = {
+  id: PropTypes.string.isRequired,
+  imageURL: PropTypes.string.isRequired,
+  modalURL: PropTypes.string.isRequired,
+};
 
 export default ImageGalleryItem;
