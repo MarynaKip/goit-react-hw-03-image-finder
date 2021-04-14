@@ -17,7 +17,9 @@ class Button extends Component {
         type="button"
         onClick={() => this.props.onClick()}
         // onClick={this.props.onClick()}
-      ></button>
+      >
+        Load more
+      </button>
     );
   }
 }

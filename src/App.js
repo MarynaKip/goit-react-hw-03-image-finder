@@ -12,6 +12,10 @@ import Modal from "./components/Modal";
 //   "Bearer 20328481-fd22f6b33af33c123ae9427ab";
 
 class App extends Component {
+  constructor() {
+    super();
+    this.listRef = React.createRef();
+  }
   static defaultProps = {};
 
   static propTypes = {};
@@ -26,9 +30,30 @@ class App extends Component {
     modalImage: "",
   };
 
-  componentDidUpdate(prevProps, prevState) {
+  getSnapshotBeforeUpdate(prevProps, prevState) {
+    // Добавляются ли в список новые элементы?
+    // Запоминаем значение прокрутки, чтобы использовать его позже.
+    if (prevState.images.length < this.state.images.length) {
+      const list = this.listRef.current;
+      return list.scrollHeight - list.scrollTop;
+    }
+    return null;
+  }
+
+  componentDidUpdate(prevProps, prevState, snapshot) {
     if (prevState.searchQuery !== this.state.searchQuery) {
       this.fetchImages();
+    }
+
+    if (snapshot !== null) {
+      const list = this.listRef.current;
+
+      //list.scrollTop = list.scrollHeight - snapshot;
+      window.scrollTo({
+        top: list.scrollHeight,
+
+        behavior: "smooth",
+      });
     }
   }
 
@@ -72,19 +97,21 @@ class App extends Component {
         )}
         {error && <p>Oops!</p>}
         <Searchbar onSubmit={this.onChangeQuery} />
-        {/* <ImageGallery id={id}
-          images={images}
-          onOpenModal={this.toggleModal} /> */}
-        <ImageGallery>
-          {images.map((image) => (
-            <ImageGalleryItem
-              id={image.id}
-              imageURL={image.webformatURL}
-              modalURL={image.largeImageURL}
-              onClick={this.onOpenModal}
-            />
-          ))}
-        </ImageGallery>
+        <div ref={this.listRef}>
+          {
+            <ImageGallery>
+              {images.map((image) => (
+                <ImageGalleryItem
+                  id={image.id}
+                  imageURL={image.webformatURL}
+                  modalURL={image.largeImageURL}
+                  onClick={this.onOpenModal}
+                />
+              ))}
+            </ImageGallery>
+          }
+        </div>
+
         {isLoading && <Loader />}
         {images.length > 0 && <Button onClick={this.fetchImages} />}
       </div>
