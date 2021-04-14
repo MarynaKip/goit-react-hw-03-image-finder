@@ -40,21 +40,21 @@ class App extends Component {
     return null;
   }
 
-  componentDidUpdate(prevProps, prevState, snapshot) {
+  componentDidUpdate(prevProps, prevState) {
     if (prevState.searchQuery !== this.state.searchQuery) {
       this.fetchImages();
     }
 
-    if (snapshot !== null) {
-      const list = this.listRef.current;
+    // if (snapshot !== null) {
+    //   const list = this.listRef.current;
 
-      //list.scrollTop = list.scrollHeight - snapshot;
-      window.scrollTo({
-        top: list.scrollHeight,
+    //   //list.scrollTop = list.scrollHeight - snapshot;
+    //   window.scrollTo({
+    //     top: list.scrollHeight,
 
-        behavior: "smooth",
-      });
-    }
+    //     behavior: "smooth",
+    //   });
+    // }
   }
 
   onChangeQuery = (query) => {
@@ -77,6 +77,17 @@ class App extends Component {
       })
       .catch((error) => this.setState({ error }))
       .finally(() => this.setState({ isLoading: false }));
+  };
+
+  onLoadMore = () => {
+    this.fetchImages();
+    const list = this.listRef.current;
+
+    window.scrollTo({
+      top: list.scrollHeight,
+
+      behavior: "smooth",
+    });
   };
 
   toggleModal = () => {
@@ -113,7 +124,7 @@ class App extends Component {
         </div>
 
         {isLoading && <Loader />}
-        {images.length > 0 && <Button onClick={this.fetchImages} />}
+        {images.length > 0 && <Button onClick={this.onLoadMore} />}
       </div>
     );
   }
