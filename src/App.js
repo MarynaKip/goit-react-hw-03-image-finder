@@ -45,16 +45,16 @@ class App extends Component {
       this.fetchImages();
     }
 
-    // if (snapshot !== null) {
-    //   const list = this.listRef.current;
+    if (this.state.page !== 2) {
+      const list = this.listRef.current;
 
-    //   //list.scrollTop = list.scrollHeight - snapshot;
-    //   window.scrollTo({
-    //     top: list.scrollHeight,
+      //list.scrollTop = list.scrollHeight - snapshot;
+      window.scrollTo({
+        top: list.scrollHeight,
 
-    //     behavior: "smooth",
-    //   });
-    // }
+        behavior: "smooth",
+      });
+    }
   }
 
   onChangeQuery = (query) => {
@@ -81,13 +81,13 @@ class App extends Component {
 
   onLoadMore = () => {
     this.fetchImages();
-    const list = this.listRef.current;
+    // const list = this.listRef.current;
 
-    window.scrollTo({
-      top: list.scrollHeight,
+    // window.scrollTo({
+    //   top: list.scrollHeight,
 
-      behavior: "smooth",
-    });
+    //   behavior: "smooth",
+    // });
   };
 
   toggleModal = () => {
